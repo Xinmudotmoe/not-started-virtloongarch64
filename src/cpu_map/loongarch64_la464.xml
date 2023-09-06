@@ -1,0 +1,5 @@
+<cpus>
+  <model name='la464'>
+    <decode host='on' guest='on'/>
+  </model>
+</cpus>
