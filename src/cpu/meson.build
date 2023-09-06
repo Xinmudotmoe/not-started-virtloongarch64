@@ -6,6 +6,7 @@ cpu_sources = [
   'cpu_riscv64.c',
   'cpu_s390.c',
   'cpu_x86.c',
+  'cpu_loongarch64.c',
 ]
 
 cpu_lib = static_library(

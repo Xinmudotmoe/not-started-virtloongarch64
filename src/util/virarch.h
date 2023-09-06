@@ -69,6 +69,9 @@ typedef enum {
     VIR_ARCH_XTENSA,       /* XTensa      32 LE https://en.wikipedia.org/wiki/Xtensa#Processor_Cores */
     VIR_ARCH_XTENSAEB,     /* XTensa      32 BE https://en.wikipedia.org/wiki/Xtensa#Processor_Cores */
 
+//  VIR_ARCH_LOONGARCH32,      /* LoongArch   32 LE https://en.wikipedia.org/wiki/LoongArch */
+    VIR_ARCH_LOONGARCH64,  /* LoongArch   64 LE https://en.wikipedia.org/wiki/LoongArch */
+
     VIR_ARCH_LAST,
 } virArch;
 

@@ -4221,7 +4221,12 @@ qemuDomainDefAddDefaultDevices(virQEMUDriver *driver,
         if (qemuDomainIsMipsMalta(def))
             addPCIRoot = true;
         break;
-
+    case VIR_ARCH_LOONGARCH64:
+        if (qemuDomainIsLoongarch64Virt(def)) {
+            addPCIRoot = true;
+            addDefaultUSB = true;
+        }
+        break;
     case VIR_ARCH_ARMV7B:
     case VIR_ARCH_CRIS:
     case VIR_ARCH_ITANIUM:
@@ -8901,6 +8906,20 @@ qemuDomainMachineIsRISCVVirt(const char *machine,
     return false;
 }
 
+static bool
+qemuDomainMachineIsLoongarch64Virt(const char *machine,
+                             const virArch arch)
+{
+    if (arch!=VIR_ARCH_LOONGARCH64)
+        return false;
+
+    if (STREQ(machine, "virt") ||
+        STRPREFIX(machine, "virt-")) {
+        return true;
+    }
+
+    return false;
+}
 
 /* You should normally avoid this function and use
  * qemuDomainIsPSeries() instead. */
@@ -8996,6 +9015,12 @@ bool
 qemuDomainIsRISCVVirt(const virDomainDef *def)
 {
     return qemuDomainMachineIsRISCVVirt(def->os.machine, def->os.arch);
+}
+
+bool
+qemuDomainIsLoongarch64Virt(const virDomainDef *def)
+{
+    return qemuDomainMachineIsLoongarch64Virt(def->os.machine, def->os.arch);
 }
 
 

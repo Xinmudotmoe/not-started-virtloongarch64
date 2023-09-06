@@ -1138,7 +1138,7 @@ virQEMUCapsInitGuestFromBinary(virCaps *caps,
                                       NULL, NULL, 0, NULL);
     }
 
-    if ((ARCH_IS_X86(guestarch) || guestarch == VIR_ARCH_AARCH64))
+    if ((ARCH_IS_X86(guestarch) || guestarch == VIR_ARCH_AARCH64 ||  guestarch == VIR_ARCH_LOONGARCH64))
         virCapabilitiesAddGuestFeatureWithToggle(guest, VIR_CAPS_GUEST_FEATURE_TYPE_ACPI,
                                                  true, true);
 
@@ -2697,6 +2697,10 @@ static const char *preferredMachines[] =
 
     "sim", /* VIR_ARCH_XTENSA */
     "sim", /* VIR_ARCH_XTENSAEB */
+
+
+//  "virt", /* VIR_ARCH_LOONGARCH32 */
+    "virt", /* VIR_ARCH_LOONGARCH64 */
 };
 G_STATIC_ASSERT(G_N_ELEMENTS(preferredMachines) == VIR_ARCH_LAST);
 

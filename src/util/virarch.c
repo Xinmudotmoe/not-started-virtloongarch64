@@ -83,6 +83,10 @@ static const struct virArchData {
 
     { "xtensa",       32, VIR_ARCH_LITTLE_ENDIAN },
     { "xtensaeb",     32, VIR_ARCH_BIG_ENDIAN },
+
+//  { "loong32",      32, VIR_ARCH_LITTLE_ENDIAN },
+    { "loongarch64",  64, VIR_ARCH_LITTLE_ENDIAN },
+
 };
 
 G_STATIC_ASSERT(G_N_ELEMENTS(virArchData) == VIR_ARCH_LAST);
