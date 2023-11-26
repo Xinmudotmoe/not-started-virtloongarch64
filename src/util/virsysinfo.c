@@ -1228,6 +1228,74 @@ virSysinfoReadDMI(void)
     return g_steal_pointer(&ret);
 }
 
+static int
+virSysinfoParseLoongarch64Processor(const char *base, virSysinfoDef *ret)
+{
+    const char *cur;
+    char *eol, *tmp_base;
+    virSysinfoProcessorDef *processor;
+    char *processor_type = NULL;
+
+    if (!(tmp_base = strstr(base, "Model Name")) &&
+        !(tmp_base = strstr(base, "processor")))
+        return 0;
+
+    eol = strchr(tmp_base, '\n');
+    cur = strchr(tmp_base, ':') + 1;
+    virSkipSpaces(&cur);
+    if (eol)
+        processor_type = g_strndup(cur, eol - cur);
+
+    while ((tmp_base = strstr(base, "processor")) != NULL) {
+        base = tmp_base;
+        eol = strchr(base, '\n');
+        cur = strchr(base, ':') + 1;
+
+        VIR_EXPAND_N(ret->processor, ret->nprocessor, 1);
+        processor = &ret->processor[ret->nprocessor - 1];
+
+        virSkipSpaces(&cur);
+        if (eol)
+            processor->processor_socket_destination = g_strndup(cur,
+                                                                eol - cur);
+
+        processor->processor_type = g_strdup(processor_type);
+
+        base = cur;
+    }
+
+    VIR_FREE(processor_type);
+    return 0;
+}
+virSysinfoDef *
+virSysinfoReadLoongArch64(void);
+virSysinfoDef *
+virSysinfoReadLoongArch64(void){
+    g_autoptr(virSysinfoDef) ret = NULL;
+    g_autofree char *outbuf = NULL;
+
+    if ((ret = virSysinfoReadDMI())) {
+        if (!virSysinfoDefIsEmpty(ret))
+            return g_steal_pointer(&ret);
+        virSysinfoDefFree(ret);
+    }
+
+    virResetLastError();
+    ret = g_new0(virSysinfoDef, 1);
+
+    if (virFileReadAll(CPUINFO, CPUINFO_FILE_LEN, &outbuf) < 0) {
+        virReportError(VIR_ERR_INTERNAL_ERROR,
+                       _("Failed to open %1$s"), CPUINFO);
+        return NULL;
+    }
+
+    ret->nprocessor = 0;
+    ret->processor = NULL;
+    if (virSysinfoParseLoongarch64Processor(outbuf, ret) < 0)
+        return NULL;
+
+    return g_steal_pointer(&ret);
+}
 
 /**
  * virSysinfoRead:
@@ -1250,6 +1318,8 @@ virSysinfoRead(void)
      defined(__i386__) || \
      defined(__amd64__))
     return virSysinfoReadDMI();
+#elif defined(__loongarch64)
+    return virSysinfoReadLoongArch64();
 #else /* WIN32 || not supported arch */
     /*
      * this can probably be extracted from Windows using API or registry
