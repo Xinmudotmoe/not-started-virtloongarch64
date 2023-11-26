@@ -553,6 +553,8 @@ virHostCPUParseFrequency(FILE *cpuinfo,
         prefix = "clock";
     else if (ARCH_IS_S390(arch))
         prefix = "cpu MHz dynamic";
+    else if (arch == VIR_ARCH_LOONGARCH64)
+        prefix = "CPU MHz";
 
     if (!prefix) {
         VIR_WARN("%s is not supported by the %s parser",
