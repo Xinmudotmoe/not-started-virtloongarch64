@@ -121,6 +121,7 @@
   </arch>
   <arch name='loongarch64'>
     <include filename='loongarch64_vendors.xml'/>
-    <include filename='loongarch64_la464.xml'/>
+    <include filename='loongarch64_la464-loongarch-cpu.xml'/>
+    <include filename='loongarch64_max-loongarch-cpu.xml'/>
   </arch>
 </cpus>

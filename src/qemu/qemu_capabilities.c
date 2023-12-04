@@ -2076,7 +2076,8 @@ bool virQEMUCapsHasPCIMultiBus(const virDomainDef *def)
     /* If the virt machine, both on ARM and RISC-V, supports PCI,
      * then it also supports multibus */
     if (qemuDomainIsARMVirt(def) ||
-        qemuDomainIsRISCVVirt(def)) {
+        qemuDomainIsRISCVVirt(def) ||
+        qemuDomainIsLoongarch64Virt(def) ) {
         return true;
     }
 

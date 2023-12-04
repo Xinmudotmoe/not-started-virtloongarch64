@@ -1,0 +1,5 @@
+<cpus>
+  <model name='max-loongarch-cpu'>
+    <decode host='on' guest='on'/>
+  </model>
+</cpus>

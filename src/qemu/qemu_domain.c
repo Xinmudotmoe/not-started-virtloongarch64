@@ -4222,10 +4222,12 @@ qemuDomainDefAddDefaultDevices(virQEMUDriver *driver,
             addPCIRoot = true;
         break;
     case VIR_ARCH_LOONGARCH64:
-        if (qemuDomainIsLoongarch64Virt(def)) {
-            addPCIRoot = true;
-            addDefaultUSB = true;
-        }
+        addPCIeRoot = true;
+        addDefaultUSB = true;
+        usbModel = VIR_DOMAIN_CONTROLLER_MODEL_USB_NEC_XHCI;
+        addImplicitSATA = true;
+        addDefaultUSBKBD = true;
+        addDefaultUSBMouse = true;
         break;
     case VIR_ARCH_ARMV7B:
     case VIR_ARCH_CRIS:

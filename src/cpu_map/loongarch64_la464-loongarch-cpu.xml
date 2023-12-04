@@ -1,5 +1,5 @@
 <cpus>
-  <model name='la464'>
+  <model name='la464-loongarch-cpu'>
     <decode host='on' guest='on'/>
   </model>
 </cpus>
